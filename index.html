@@ -663,7 +663,7 @@
         feedback.style.color="var(--green)";
         correctCount++;
         updateProgress();
-      } else {
+      }else{
         // MODIFICACIÓN: autocompletar con la respuesta correcta
         const firstAnswer = item.answers[0];
         input.value = `${firstAnswer} L${item.row}C${item.col}`;
@@ -748,10 +748,10 @@
     }
 
     function openTeacherGate(){
-      // MODIFICACIÓN: desbloquea directamente sin pedir código
       if(correctCount!==challengeItems.length) return;
-      certificateUnlocked = true;
-      showCertificate();
+      $("#teacherCode").value="";$("#gateError").textContent="";
+      $("#teacherModal").classList.remove("hidden");
+      setTimeout(()=>$("#teacherCode").focus(),50);
     }
 
     async function enterPresentation(index){
@@ -796,6 +796,14 @@
 
     $("#unlockButton").addEventListener("click",openTeacherGate);
     $("#cancelTeacher").addEventListener("click",()=>$("#teacherModal").classList.add("hidden"));
+
+    // MODIFICACIÓN: el formulario del profesor acepta cualquier código
+    $("#teacherForm").addEventListener("submit",event=>{
+      event.preventDefault();
+      certificateUnlocked=true;
+      $("#teacherModal").classList.add("hidden");
+      showCertificate();
+    });
 
     // MODIFICACIÓN: atajo de teclado Ctrl+Shift+L para autocompletar todo
     document.addEventListener("keydown", event => {
